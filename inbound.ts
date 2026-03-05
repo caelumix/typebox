@@ -214,6 +214,8 @@ interface tun<T extends string, RS extends string> extends item_with_tag<T> {
     include_package?: listable<string>
     exclude_package?: listable<string>
     endpoint_independent_nat?: boolean
+    include_mac_address?: listable<string>
+    exclude_mac_address?: listable<string>
     udp_timeout?: string
     stack?: 'system' | 'gvisor' | 'mixed'
     platform?: {

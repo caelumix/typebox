@@ -57,6 +57,8 @@ export interface route<
     rule_set?: RS[]
     final?: outbound_tag
     find_process?: boolean
+    find_neighbor?: boolean
+    dhcp_lease_files?: listable<string>
     auto_detect_interface?: boolean
     override_android_vpn?: boolean
     default_interface?: string

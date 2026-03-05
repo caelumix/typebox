@@ -29,6 +29,8 @@ export interface base_default_rule extends rule {
     interface_address?: Record<string, listable<string>>
     network_interface_address?: Record<network_type, listable<string>>
     default_interface_address?: listable<string>
+    source_mac_address?: listable<string>
+    source_hostname?: listable<string>
 }
 
 export interface base_logical_rule extends rule {
