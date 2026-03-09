@@ -14,7 +14,6 @@ export interface server_tls<O extends string, DS extends string> extends base_tl
 
 export interface client_tls extends base_tls {
     disable_sni?: boolean
-    insecure?: boolean
     ech?: client_ech
     utls?: utls
     reality?: client_reality
@@ -31,6 +30,7 @@ export interface client_tls extends base_tls {
 interface base_tls {
     enabled: true
     server_name?: string
+    insecure?: boolean
     alpn?: listable<string>
     min_version?: tls_version
     max_version?: tls_version
