@@ -20,4 +20,4 @@ export interface log {
     timestamp?: boolean
 }
 
-type log_level = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatel' | 'panic'
+type log_level = 'trace' | 'debug' | 'info' | 'warn' | 'warning' | 'error' | 'fatal' | 'panic'
