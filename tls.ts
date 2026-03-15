@@ -93,7 +93,7 @@ interface dns01_ali {
 interface dns01_cf {
     provider: 'cloudflare'
     api_token: string
-    zone_token: string
+    zone_token?: string
 }
 
 interface acmedns {
