@@ -18,35 +18,45 @@ export const createInbound = <
     outbound_tag extends string = never,
     dns_server_tag extends string = never,
     rule_set_tag extends string = never,
->(inbound: inbound<tag, outbound_tag, dns_server_tag, inbound_tag, rule_set_tag>): inbound<tag, outbound_tag, dns_server_tag, inbound_tag, rule_set_tag> =>
-    inbound
+    certificate_provider_tag extends string = never,
+>(
+    inbound: inbound<tag, outbound_tag, dns_server_tag, inbound_tag, rule_set_tag, certificate_provider_tag>,
+): inbound<tag, outbound_tag, dns_server_tag, inbound_tag, rule_set_tag, certificate_provider_tag> => inbound
 
 export const createInbounds = <
     tag extends string,
     outbound_tag extends string,
     dns_server_tag extends string,
     rule_set_tag extends string,
-    I extends inbound<tag, outbound_tag, dns_server_tag, I['tag'], rule_set_tag>,
+    certificate_provider_tag extends string,
+    I extends inbound<tag, outbound_tag, dns_server_tag, I['tag'], rule_set_tag, certificate_provider_tag>,
 >(inbounds: I[]): I[] => inbounds
 
 /**
  * You should not use this directly, instead use {@link createInbound} or {@link createInbounds}.
  */
-export type inbound<tag extends string, outbound_tag extends string, dns_server_tag extends string, inbound_tag extends string, rule_set_tag extends string> =
+export type inbound<
+    tag extends string,
+    outbound_tag extends string,
+    dns_server_tag extends string,
+    inbound_tag extends string,
+    rule_set_tag extends string,
+    certificate_provider_tag extends string,
+> =
     | direct<tag, inbound_tag>
     | mixed<tag, inbound_tag>
     | socks<tag, inbound_tag>
-    | http<tag, outbound_tag, dns_server_tag, inbound_tag>
+    | http<tag, outbound_tag, dns_server_tag, inbound_tag, certificate_provider_tag>
     | shadowsocks<tag, inbound_tag>
-    | vmess<tag, outbound_tag, dns_server_tag, inbound_tag>
-    | trojan<tag, outbound_tag, dns_server_tag, inbound_tag>
-    | naive<tag, outbound_tag, dns_server_tag, inbound_tag>
-    | hysteria<tag, outbound_tag, dns_server_tag, inbound_tag>
+    | vmess<tag, outbound_tag, dns_server_tag, inbound_tag, certificate_provider_tag>
+    | trojan<tag, outbound_tag, dns_server_tag, inbound_tag, certificate_provider_tag>
+    | naive<tag, outbound_tag, dns_server_tag, inbound_tag, certificate_provider_tag>
+    | hysteria<tag, outbound_tag, dns_server_tag, inbound_tag, certificate_provider_tag>
     | shadowtls<tag, outbound_tag, dns_server_tag, inbound_tag>
-    | vless<tag, outbound_tag, dns_server_tag, inbound_tag>
-    | tuic<tag, outbound_tag, dns_server_tag, inbound_tag>
-    | hysteria2<tag, outbound_tag, dns_server_tag, inbound_tag>
-    | anytls<tag, outbound_tag, dns_server_tag, inbound_tag>
+    | vless<tag, outbound_tag, dns_server_tag, inbound_tag, certificate_provider_tag>
+    | tuic<tag, outbound_tag, dns_server_tag, inbound_tag, certificate_provider_tag>
+    | hysteria2<tag, outbound_tag, dns_server_tag, inbound_tag, certificate_provider_tag>
+    | anytls<tag, outbound_tag, dns_server_tag, inbound_tag, certificate_provider_tag>
     | tun<tag, rule_set_tag>
     | redirect<tag, inbound_tag>
     | tproxy<tag, inbound_tag>
@@ -66,11 +76,11 @@ interface socks<T extends string, I extends string> extends listen<T, I> {
     type: 'socks'
     users?: auth[]
 }
-interface http<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
+interface http<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
     type: 'http'
     users?: auth[]
     set_system_proxy?: boolean
-    tls?: tls<O, DS>
+    tls?: tls<O, DS, C>
 }
 interface shadowsocks<T extends string, I extends string> extends listen<T, I> {
     type: 'shadowsocks'
@@ -81,17 +91,17 @@ interface shadowsocks<T extends string, I extends string> extends listen<T, I> {
     destinations?: [user & server]
     multiplex?: multiplex
 }
-interface vmess<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
+interface vmess<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
     type: 'vmess'
     users: vmess_user[]
-    tls?: tls<O, DS>
+    tls?: tls<O, DS, C>
     multiplex?: multiplex
     transport?: transport
 }
-interface trojan<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
+interface trojan<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
     type: 'trojan'
     users: user[]
-    tls?: tls<O, DS>
+    tls?: tls<O, DS, C>
     fallback?: server
     fallback_for_alpn?: {
         [alpn: string]: server
@@ -99,7 +109,7 @@ interface trojan<T extends string, O extends string, DS extends string, I extend
     multiplex?: multiplex
     transport?: transport
 }
-interface naive<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
+interface naive<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
     type: 'naive'
     users: auth[]
     network?: network
@@ -107,9 +117,9 @@ interface naive<T extends string, O extends string, DS extends string, I extends
      * @default bbr
      */
     quic_congestion_control?: 'bbr' | 'bbr_standard' | 'bbr2' | 'bbr2_variant' | 'cubic' | 'reno'
-    tls?: tls<O, DS>
+    tls?: tls<O, DS, C>
 }
-interface hysteria<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
+interface hysteria<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
     type: 'hysteria'
     up: string
     up_mbps: number
@@ -121,7 +131,7 @@ interface hysteria<T extends string, O extends string, DS extends string, I exte
     recv_window_client?: number
     max_conn_client?: number
     disable_mtu_discovery?: boolean
-    tls: tls<O, DS>
+    tls: tls<O, DS, C>
 }
 interface shadowtls<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
     type: 'shadowtls'
@@ -135,23 +145,23 @@ interface shadowtls<T extends string, O extends string, DS extends string, I ext
     strict_mode?: boolean
     wildcard_sni?: 'off' | 'authed' | 'all'
 }
-interface vless<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
+interface vless<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
     type: 'vless'
     users: vless_user[]
-    tls?: tls<O, DS>
+    tls?: tls<O, DS, C>
     multiplex?: multiplex
     transport?: transport
 }
-interface tuic<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
+interface tuic<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
     type: 'tuic'
     users: tuic_user[]
     congestion_control?: 'cubic' | 'new_reno' | 'bbr'
     auth_timeout?: duration
     zero_rtt_handshake?: boolean
     heartbeat?: duration
-    tls: tls<O, DS>
+    tls: tls<O, DS, C>
 }
-interface hysteria2<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
+interface hysteria2<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
     type: 'hysteria2'
     up_mbps?: number
     down_mbps?: number
@@ -161,18 +171,18 @@ interface hysteria2<T extends string, O extends string, DS extends string, I ext
     }
     users: user[]
     ignore_client_bandwidth?: boolean
-    tls: tls<O, DS>
+    tls: tls<O, DS, C>
     masquerade?: string
     brutal_debug?: boolean
 }
-interface anytls<T extends string, O extends string, DS extends string, I extends string> extends listen<T, I> {
+interface anytls<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
     type: 'anytls'
     users: user[]
     /**
      * AnyTLS padding scheme line array.
      */
     padding_scheme?: listable<string>
-    tls?: tls<O, DS>
+    tls?: tls<O, DS, C>
 }
 interface tun<T extends string, RS extends string> extends item_with_tag<T> {
     type: 'tun'

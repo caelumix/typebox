@@ -1,8 +1,13 @@
+import type { headless_certificate_provider } from './certificate_provider.ts'
 import type { dialer, duration, listable, server } from './types.ts'
 
-export interface server_tls<O extends string, DS extends string> extends base_tls {
+export interface server_tls<O extends string, DS extends string, C extends string> extends base_tls {
     key?: listable<string>
     key_path?: string
+    /**
+     * @deprecated inline ACME options are deprecated will be removed in sing-box 1.16.0
+     * @since 1.14.0
+     */
     acme?: acme
     ech?: server_ech
     reality?: server_reality<O, DS>
@@ -10,6 +15,7 @@ export interface server_tls<O extends string, DS extends string> extends base_tl
     client_certificate?: listable<string>
     client_certificate_path?: listable<string>
     client_certificate_public_key_sha256?: listable<string>
+    certificate_provider?: C | headless_certificate_provider<O>
 }
 
 export interface client_tls extends base_tls {
