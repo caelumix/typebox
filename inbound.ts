@@ -8,7 +8,7 @@
  * ```
  */
 
-import type { dialer, duration, item_with_tag, listable, listen, network, server, shadowsocks_method } from './types.ts'
+import type { dialer, duration, headers, item_with_tag, listable, listen, network, server, shadowsocks_method } from './types.ts'
 import type { server_tls as tls } from './tls.ts'
 import type { transport } from './transport.ts'
 
@@ -172,7 +172,11 @@ interface hysteria2<T extends string, O extends string, DS extends string, I ext
     users: user[]
     ignore_client_bandwidth?: boolean
     tls: tls<O, DS, C>
-    masquerade?: string
+    masquerade?: string | masquerade
+    /**
+     * @default standard
+     */
+    bbr_profile?: 'conservative' | 'standard' | 'aggressive'
     brutal_debug?: boolean
 }
 interface anytls<T extends string, O extends string, DS extends string, I extends string, C extends string> extends listen<T, I> {
@@ -281,4 +285,21 @@ interface tuic_user {
     name?: string
     uuid: string
     password?: string
+}
+
+type masquerade = masquerade_file | masquerade_proxy | masquerade_http
+interface masquerade_file {
+    type: 'file'
+    directory: string
+}
+interface masquerade_proxy {
+    type: 'proxy'
+    url: string
+    rewrite_host?: boolean
+}
+interface masquerade_http {
+    type: 'string'
+    status_code?: number
+    headers?: headers
+    content: string
 }

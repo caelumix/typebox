@@ -205,6 +205,7 @@ interface hysteria2<T extends string, O extends string, DS extends string> exten
     type: 'hysteria2'
     server_ports?: listable<string>
     hop_interval?: duration
+    hop_interval_max?: duration
     up_mbps?: number
     down_mbps?: number
     obfs?: {
@@ -213,8 +214,11 @@ interface hysteria2<T extends string, O extends string, DS extends string> exten
     }
     password?: string
     tls: tls
+    /**
+     * @default standard
+     */
+    bbr_profile?: 'conservative' | 'standard' | 'aggressive'
     brutal_debug?: boolean
-    masquerade?: string | masquerade
 }
 interface anytls<T extends string, O extends string, DS extends string> extends remote<T, O, DS>, server {
     type: 'anytls'
@@ -289,21 +293,4 @@ interface multiplex {
 type udp_over_tcp = boolean | {
     enabled: true
     version: 1 | 2
-}
-
-type masquerade = masquerade_file | masquerade_proxy | masquerade_http
-interface masquerade_file {
-    type: 'file'
-    directory: string
-}
-interface masquerade_proxy {
-    type: 'proxy'
-    url: string
-    rewrite_host?: boolean
-}
-interface masquerade_http {
-    type: 'string'
-    status_code?: number
-    headers?: headers
-    content: string
 }
