@@ -1,3 +1,13 @@
+/**
+ * @module
+ * The certificate provider field.
+ *
+ * @example
+ * ```ts
+ * import { createCertificateProvider } from "@zhexin/typebox/certificate_provider"
+ * ```
+ */
+
 import type { item_with_tag, listable } from './types.ts'
 
 export const createCertificateProvider = <
