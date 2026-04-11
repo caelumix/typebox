@@ -21,6 +21,7 @@ export interface base_default_rule extends rule {
     process_path?: listable<string>
     process_path_regex?: listable<string>
     package_name?: listable<string>
+    package_name_regex?: listable<string>
     wifi_ssid?: listable<string>
     wifi_bssid?: listable<string>
     network_type?: listable<network_type>
