@@ -58,10 +58,21 @@ export interface dns<
     servers?: DS[]
     rules?: rule<outbound_tag | 'any', inbound_tag, rule_set_tag, DS['tag']>[]
     final?: DS['tag']
+    optimistic?: boolean | {
+        enabled: true
+        /**
+         * @default 3d
+         */
+        timeout: duration
+    }
     reverse_mapping?: boolean
     strategy?: strategy
     disable_cache?: boolean
     disable_expire?: boolean
+    /**
+     * @deprecated independent_cache is deprecated and will be removed in sing-box 1.14.0
+     * @since 1.14.0
+     */
     independent_cache?: boolean
     cache_capacity?: number
     client_subnet?: string

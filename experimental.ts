@@ -32,7 +32,12 @@ interface cache_file {
     path?: string
     cache_id?: string
     store_fakeip?: boolean
+    /**
+     * @deprecated store_rdrc is deprecated and will be removed in sing-box 1.16.0
+     * @since 1.14.0
+     */
     store_rdrc?: boolean
+    store_dns?: boolean
     rdrc_timeout?: duration
 }
 
