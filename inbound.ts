@@ -60,6 +60,7 @@ export type inbound<
     | tun<tag, rule_set_tag>
     | redirect<tag, inbound_tag>
     | tproxy<tag, inbound_tag>
+    | cloudflared<tag, outbound_tag, dns_server_tag>
 
 interface direct<T extends string, I extends string> extends listen<T, I> {
     type: 'direct'
@@ -247,6 +248,19 @@ interface redirect<T extends string, I extends string> extends listen<T, I> {
 interface tproxy<T extends string, I extends string> extends listen<T, I> {
     type: 'tproxy'
     network?: network
+}
+interface cloudflared<T extends string, O extends string, DS extends string> extends item_with_tag<T> {
+    type: 'cloudflared'
+    token: string
+    ha_connections?: number
+    protocol?: 'quic' | 'http2'
+    post_quantum?: boolean
+    edge_ip_version?: 0 | 4 | 6
+    datagram_version?: 'v2' | 'v3'
+    grace_period?: duration
+    region?: string
+    control_dialer?: dialer<O, DS>
+    tunnel_dialer?: dialer<O, DS>
 }
 
 interface multiplex {
