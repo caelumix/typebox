@@ -239,6 +239,8 @@ type rule_item<
 type action<DS extends string> =
     | action_route<DS>
     | action_route_options
+    | action_evaluate<DS>
+    | action_respond
     | action_reject
     | action_predefined
 interface action_route<DS extends string> extends resolver<DS> {
@@ -247,18 +249,19 @@ interface action_route<DS extends string> extends resolver<DS> {
 interface action_route_options extends options {
     action: 'route-options'
 }
+interface action_evaluate<DS extends string> extends options {
+    action: 'evaluate'
+    server: DS
+}
+interface action_respond {
+    action: 'respond'
+}
 interface action_predefined {
     action: 'predefined'
     /**
      * @default NOERROR
      */
-    rcode?:
-        | 'NOERROR'
-        | 'FORMERR'
-        | 'SERVFAIL'
-        | 'NXDOMAIN'
-        | 'NOTIMP'
-        | 'REFUSED'
+    rcode?: dns_rcode
     /**
      * @example localhost. IN A 127.0.0.1
      * @example localhost. IN AAAA ::1
@@ -276,8 +279,22 @@ interface default_rule<O extends string, I extends string, RS extends string> ex
      */
     outbound?: listable<O>
     network?: listable<dns_network>
+    /**
+     * @deprecated rule_set_ip_cidr_accept_empty is deprecated and will be removed in sing-box 1.16.0
+     * @since 1.14.0
+     */
     rule_set_ip_cidr_accept_empty?: boolean
+    match_response?: boolean
     ip_accept_any?: boolean
+    response_rcode?: dns_rcode
+    /**
+     * @example localhost. IN A 127.0.0.1
+     * @example localhost. IN AAAA ::1
+     * @example localhost. IN TXT \"Hello\"
+     */
+    response_answer?: listable<string>
+    response_ns?: listable<string>
+    response_extra?: listable<string>
 }
 interface logical_rule<
     O extends string,
@@ -287,3 +304,11 @@ interface logical_rule<
 > extends base_logical_rule {
     rules: rule_item<O, I, RS, DS>[]
 }
+
+type dns_rcode =
+    | 'NOERROR'
+    | 'FORMERR'
+    | 'SERVFAIL'
+    | 'NXDOMAIN'
+    | 'NOTIMP'
+    | 'REFUSED'
