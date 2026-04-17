@@ -1,13 +1,15 @@
 {
     "$schema": "https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json",
     "name": "@zhexin/typebox",
-    "version": "1.14.5",
+    "version": "1.14.6",
     "exports": {
         ".": "./mod.ts",
+        "./certificate_provider": "./certificate_provider.ts",
         "./certificate": "./certificate.ts",
         "./dns": "./dns.ts",
         "./endpoint": "./endpoint.ts",
         "./experimental": "./experimental.ts",
+        "./http_client": "./http_client.ts",
         "./inbound": "./inbound.ts",
         "./log": "./log.ts",
         "./ntp": "./ntp.ts",
