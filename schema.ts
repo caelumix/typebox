@@ -14,13 +14,13 @@ export interface schema {
     $schema?: string
     log?: log
     dns?: dns<string, string, string, string, dns.server<string, string, string, string>>
-    endpoints?: endpoint<string, string, string>[]
-    inbounds?: inbound<string, string, string, string, string, string>[]
+    endpoints?: endpoint<string, string, string, string>[]
+    inbounds?: inbound<string, string, string, string, string, string, string>[]
     outbounds?: outbound<string, string, string>[]
-    route?: route<string, string, string, route.rule_set<string, string>>
-    services?: service<string, string, string, string, string>[]
+    route?: route<string, string, string, string, route.rule_set<string, string, string, string>>
+    services?: service<string, string, string, string, string, string>[]
     experimental?: experimental
     ntp?: ntp<string, string>
     certificate?: certificate
-    certificate_providers?: certificate_provider<string, string>[]
+    certificate_providers?: certificate_provider<string, string, string, string>[]
 }

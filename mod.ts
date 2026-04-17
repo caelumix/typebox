@@ -36,6 +36,7 @@ import type { certificate_provider } from './certificate_provider.ts'
 import type { dns } from './dns.ts'
 import type { endpoint } from './endpoint.ts'
 import type { experimental } from './experimental.ts'
+import type { http_client } from './http_client.ts'
 import type { inbound } from './inbound.ts'
 import type { log } from './log.ts'
 import type { ntp } from './ntp.ts'
@@ -47,13 +48,14 @@ import type { service } from './service.ts'
  * You should not use this directly, instead use {@link createTypebox}.
  */
 export interface typebox<
-    C extends certificate_provider<string, E['tag'] | O['tag']>,
+    C extends certificate_provider<string, E['tag'] | O['tag'], H['tag'], DS['tag']>,
     O extends outbound<string, E['tag'] | O['tag'], DS['tag']>,
-    E extends endpoint<string, E['tag'] | O['tag'], DS['tag']>,
-    I extends inbound<string, E['tag'] | O['tag'], DS['tag'], E['tag'] | I['tag'], RS['tag'], C['tag']>,
-    S extends service<string, E['tag'] | O['tag'], E['tag'] | I['tag'], DS['tag'], C['tag']>,
+    E extends endpoint<string, E['tag'] | O['tag'], DS['tag'], H['tag']>,
+    I extends inbound<string, E['tag'] | O['tag'], DS['tag'], E['tag'] | I['tag'], RS['tag'], C['tag'], H['tag']>,
+    S extends service<string, E['tag'] | O['tag'], E['tag'] | I['tag'], DS['tag'], C['tag'], H['tag']>,
     DS extends dns.server<string, E['tag'] | O['tag'], S['tag'], DS['tag']>,
-    RS extends route.rule_set<string, E['tag'] | O['tag']>,
+    RS extends route.rule_set<string, E['tag'] | O['tag'], H['tag'], DS['tag']>,
+    H extends http_client<string, E['tag'] | O['tag'], DS['tag']>,
 > {
     $schema?: string
     log?: log
@@ -61,12 +63,13 @@ export interface typebox<
     endpoints?: E[]
     inbounds?: I[]
     outbounds?: O[]
-    route?: route<E['tag'] | O['tag'], E['tag'] | I['tag'], DS['tag'], RS>
+    route?: route<E['tag'] | O['tag'], E['tag'] | I['tag'], DS['tag'], H['tag'], RS>
     services?: S[]
     experimental?: experimental
     ntp?: ntp<E['tag'] | O['tag'], DS['tag']>
     certificate?: certificate
     certificate_providers?: C[]
+    http_clients?: H[]
 }
 
 /**
@@ -93,11 +96,13 @@ export const createTypebox = <
     rule_set_tag extends string,
     service_tag extends string,
     certificate_provider_tag extends string,
+    http_client_tag extends string,
     DS extends dns.server<dns_server_tag, E['tag'] | O['tag'], S['tag'], DS['tag']> = never,
-    RS extends route.rule_set<rule_set_tag, E['tag'] | O['tag']> = never,
-    C extends certificate_provider<certificate_provider_tag, E['tag'] | O['tag']> = never,
+    RS extends route.rule_set<rule_set_tag, E['tag'] | O['tag'], H['tag'], DS['tag']> = never,
+    C extends certificate_provider<certificate_provider_tag, E['tag'] | O['tag'], H['tag'], DS['tag']> = never,
     O extends outbound<outbound_tag, E['tag'] | O['tag'], DS['tag']> = never,
-    E extends endpoint<endpoint_tag, E['tag'] | O['tag'], DS['tag']> = never,
-    I extends inbound<inbound_tag, E['tag'] | O['tag'], DS['tag'], E['tag'] | I['tag'], RS['tag'], C['tag']> = never,
-    S extends service<service_tag, E['tag'] | O['tag'], E['tag'] | I['tag'], DS['tag'], C['tag']> = never,
->(typebox: typebox<C, O, E, I, S, DS, RS>): typebox<C, O, E, I, S, DS, RS> => typebox
+    E extends endpoint<endpoint_tag, E['tag'] | O['tag'], DS['tag'], H['tag']> = never,
+    I extends inbound<inbound_tag, E['tag'] | O['tag'], DS['tag'], E['tag'] | I['tag'], RS['tag'], C['tag'], H['tag']> = never,
+    S extends service<service_tag, E['tag'] | O['tag'], E['tag'] | I['tag'], DS['tag'], C['tag'], H['tag']> = never,
+    H extends http_client<http_client_tag, E['tag'] | O['tag'], DS['tag']> = never,
+>(typebox: typebox<C, O, E, I, S, DS, RS, H>): typebox<C, O, E, I, S, DS, RS, H> => typebox

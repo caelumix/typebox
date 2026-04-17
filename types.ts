@@ -18,6 +18,8 @@ export type duration = non_empty<
         `${number}ns`,
     ]>
 >
+export type memory_bytes = string
+
 export type strategy =
     | 'prefer_ipv4'
     | 'prefer_ipv6'

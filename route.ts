@@ -8,6 +8,7 @@
  * ```
  */
 
+import type { headless_http_client } from './http_client.ts'
 import type { action_reject, base_default_rule, base_logical_rule, default_rule_with_metadata } from './rule.ts'
 import type { duration, item_with_tag, listable, network_strategy, network_type, resolver, sniff_protocol } from './types.ts'
 
@@ -26,7 +27,9 @@ import type { duration, item_with_tag, listable, network_strategy, network_type,
 export const createRuleSet = <
     tag extends string,
     outbound_tag extends string = never,
->(rs: rule_set<tag, outbound_tag>): rule_set<tag, outbound_tag> => rs
+    http_client_tag extends string = never,
+    dns_server_tag extends string = never,
+>(rs: rule_set<tag, outbound_tag, http_client_tag, dns_server_tag>): rule_set<tag, outbound_tag, http_client_tag, dns_server_tag> => rs
 
 /**
  * @example
@@ -51,10 +54,12 @@ export interface route<
     outbound_tag extends string,
     inbound_tag extends string,
     dns_server_tag extends string,
-    RS extends rule_set<string, outbound_tag>,
+    http_client_tag extends string,
+    RS extends rule_set<string, outbound_tag, http_client_tag, dns_server_tag>,
 > {
     rules?: rule<outbound_tag, inbound_tag, RS['tag'], dns_server_tag>[]
     rule_set?: RS[]
+    default_http_client?: http_client_tag
     final?: outbound_tag
     find_process?: boolean
     find_neighbor?: boolean
@@ -137,7 +142,7 @@ interface logical_rule<O extends string, I extends string, RS extends string, DS
     rules: rule_item<O, I, RS, DS>[]
 }
 
-type rule_set<T extends string, O extends string> = inline_rule_set<T> | local_rule_set<T> | remote_rule_set<T, O>
+type rule_set<T extends string, O extends string, H extends string, DS extends string> = inline_rule_set<T> | local_rule_set<T> | remote_rule_set<T, O, H, DS>
 interface inline_rule_set<T extends string> extends item_with_tag<T> {
     type: 'inline'
     rules: headless_rule[]
@@ -151,9 +156,13 @@ interface local_rule_set<T extends string> extends outline_rule_set<T> {
     type: 'local'
     path: string
 }
-interface remote_rule_set<T extends string, O extends string> extends outline_rule_set<T> {
+interface remote_rule_set<T extends string, O extends string, H extends string, DS extends string> extends outline_rule_set<T> {
     type: 'remote'
     url: string
+    http_client?: H | headless_http_client<O, DS>
+    /**
+     * @deprecated
+     */
     download_detour?: O
     update_interval?: duration
 }

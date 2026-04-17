@@ -8,17 +8,22 @@
  * ```
  */
 
+import type { headless_http_client } from './http_client.ts'
 import type { item_with_tag, listable } from './types.ts'
 
 export const createCertificateProvider = <
     tag extends string,
     outbound_tag extends string = never,
->(cp: certificate_provider<tag, outbound_tag>): certificate_provider<tag, outbound_tag> => cp
+    http_client_tag extends string = never,
+    dns_server_tag extends string = never,
+>(cp: certificate_provider<tag, outbound_tag, http_client_tag, dns_server_tag>): certificate_provider<tag, outbound_tag, http_client_tag, dns_server_tag> => cp
 
-export type certificate_provider<T extends string, O extends string> = item_with_tag<T> & headless_certificate_provider<O>
-export type headless_certificate_provider<O extends string> = acme<O> | tailscale<O> | cloudflare<O>
+export type certificate_provider<T extends string, O extends string, H extends string, DS extends string> =
+    & item_with_tag<T>
+    & headless_certificate_provider<O, H, DS>
+export type headless_certificate_provider<O extends string, H extends string, DS extends string> = acme<O, H, DS> | tailscale<O> | cloudflare<O, H, DS>
 
-interface acme<O extends string> {
+interface acme<O extends string, H extends string, DS extends string> {
     type: 'acme'
     domain: listable<string>
     /**
@@ -40,7 +45,12 @@ interface acme<O extends string> {
     }
     dns01_challenge?: dns01
     key_type?: 'ed25519' | 'p256' | 'p384' | 'rsa2048' | 'rsa4096'
+    /**
+     * @deprecated will be removed in sing-box 1.16.0.
+     * @since 1.14.0
+     */
     detour?: O
+    http_client?: H | headless_http_client<O, DS>
 }
 
 interface tailscale<E extends string> {
@@ -48,17 +58,17 @@ interface tailscale<E extends string> {
     endpoint: E
 }
 
-type cloudflare<O extends string> = origin_ca_key_cloudflare<O> | api_token_cloudflare<O>
+type cloudflare<O extends string, H extends string, DS extends string> = origin_ca_key_cloudflare<O, H, DS> | api_token_cloudflare<O, H, DS>
 
-interface origin_ca_key_cloudflare<O extends string> extends base_cloudflare<O> {
+interface origin_ca_key_cloudflare<O extends string, H extends string, DS extends string> extends base_cloudflare<O, H, DS> {
     origin_ca_key: string
 }
 
-interface api_token_cloudflare<O extends string> extends base_cloudflare<O> {
+interface api_token_cloudflare<O extends string, H extends string, DS extends string> extends base_cloudflare<O, H, DS> {
     api_token: string
 }
 
-interface base_cloudflare<O extends string> {
+interface base_cloudflare<O extends string, H extends string, DS extends string> {
     type: 'cloudflare-origin-ca'
     domain: listable<string>
     /**
@@ -74,6 +84,10 @@ interface base_cloudflare<O extends string> {
      * @default 5475
      */
     requested_validity?: 7 | 30 | 90 | 365 | 730 | 1095 | 5475
+    http_client?: H | headless_http_client<O, DS>
+    /**
+     * @deprecated
+     */
     detour?: O
 }
 

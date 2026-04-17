@@ -8,19 +8,22 @@
  * ```
  */
 
+import type { headless_http_client } from './http_client.ts'
 import type { dialer, duration, item_with_tag, listable } from './types.ts'
 
 export const createEndpoint = <
     tag extends string,
     outbound_tag extends string = never,
     dns_server_tag extends string = never,
->(endpoint: endpoint<tag, outbound_tag, dns_server_tag>): endpoint<tag, outbound_tag, dns_server_tag> => endpoint
+    http_client_tag extends string = never,
+>(endpoint: endpoint<tag, outbound_tag, dns_server_tag, http_client_tag>): endpoint<tag, outbound_tag, dns_server_tag, http_client_tag> => endpoint
 
 export const createEndpoints = <
     tag extends string,
     outbound_tag extends string,
     dns_server_tag extends string,
-    E extends endpoint<tag, outbound_tag | E['tag'], dns_server_tag>,
+    http_client_tag extends string,
+    E extends endpoint<tag, outbound_tag | E['tag'], dns_server_tag, http_client_tag>,
 >(endpoints: E[]): E[] => endpoints
 
 /**
@@ -30,7 +33,8 @@ export type endpoint<
     tag extends string,
     outbound_tag extends string,
     dns_server_tag extends string,
-> = wireguard<tag, outbound_tag, dns_server_tag> | tailscale<tag, outbound_tag, dns_server_tag>
+    http_client_tag extends string,
+> = wireguard<tag, outbound_tag, dns_server_tag> | tailscale<tag, outbound_tag, dns_server_tag, http_client_tag>
 
 interface wireguard<T extends string, O extends string, DS extends string> extends dialer<O, DS>, item_with_tag<T> {
     type: 'wireguard'
@@ -44,7 +48,7 @@ interface wireguard<T extends string, O extends string, DS extends string> exten
     udp_timeout?: duration
     workers?: number
 }
-interface tailscale<T extends string, O extends string, DS extends string> extends dialer<O, DS>, item_with_tag<T> {
+interface tailscale<T extends string, O extends string, DS extends string, H extends string> extends dialer<O, DS>, item_with_tag<T> {
     type: 'tailscale'
     /**
      * The directory where the Tailscale state is stored.
@@ -118,6 +122,10 @@ interface tailscale<T extends string, O extends string, DS extends string> exten
      * @default 5m
      */
     udp_timeout?: duration
+    /**
+     * HTTP Client for connecting to the Tailscale control plane.
+     */
+    control_http_client?: H | headless_http_client<O, DS>
 }
 
 interface peer {

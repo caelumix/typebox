@@ -1,7 +1,7 @@
 import type { headless_certificate_provider } from './certificate_provider.ts'
 import type { dialer, duration, listable, server } from './types.ts'
 
-export interface server_tls<O extends string, DS extends string, C extends string> extends base_tls {
+export interface server_tls<O extends string, DS extends string, C extends string, H extends string> extends base_tls {
     key?: listable<string>
     key_path?: string
     /**
@@ -15,7 +15,7 @@ export interface server_tls<O extends string, DS extends string, C extends strin
     client_certificate?: listable<string>
     client_certificate_path?: listable<string>
     client_certificate_public_key_sha256?: listable<string>
-    certificate_provider?: C | headless_certificate_provider<O>
+    certificate_provider?: C | headless_certificate_provider<O, H, DS>
 }
 
 export interface client_tls extends base_tls {

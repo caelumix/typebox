@@ -11,6 +11,7 @@
 import type { dialer, duration, headers, item_with_tag, listable, network, server, shadowsocks_method } from './types.ts'
 import type { transport } from './transport.ts'
 import type { client_tls as tls } from './tls.ts'
+import type { quic_client } from './http_client.ts'
 
 /**
  * @example
@@ -161,7 +162,7 @@ interface naive<T extends string, O extends string, DS extends string> extends r
         | 'certificate_public_key_sha256'
     >
 }
-interface hysteria<T extends string, O extends string, DS extends string> extends remote<T, O, DS>, server {
+interface hysteria<T extends string, O extends string, DS extends string> extends remote<T, O, DS>, server, Omit<quic_client, 'version'> {
     type: 'hysteria'
     up: string
     up_mbps: number
@@ -170,8 +171,20 @@ interface hysteria<T extends string, O extends string, DS extends string> extend
     obfs?: string
     auth?: string
     auth_str?: string
+    /**
+     * @deprecated will be removed in sing-box 1.16.0.
+     * @since 1.14.0
+     */
     recv_window_conn?: number
+    /**
+     * @deprecated will be removed in sing-box 1.16.0.
+     * @since 1.14.0
+     */
     recv_window?: number
+    /**
+     * @deprecated will be removed in sing-box 1.16.0.
+     * @since 1.14.0
+     */
     disable_mtu_discovery?: boolean
     tls: tls
 }
