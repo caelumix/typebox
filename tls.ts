@@ -31,6 +31,11 @@ export interface client_tls extends base_tls {
     client_certificate_path?: string
     client_key?: listable<string>
     client_key_path?: string
+    /**
+     * fake server name
+     */
+    spoof?: string
+    spoof_method?: 'wrong-sequence' | 'wrong-checksum'
 }
 
 interface base_tls {
