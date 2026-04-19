@@ -161,7 +161,8 @@ interface remote_rule_set<T extends string, O extends string, H extends string, 
     url: string
     http_client?: H | headless_http_client<O, DS>
     /**
-     * @deprecated
+     * @deprecated download_detour is deprecated in sing-box 1.14.0 and will be removed in sing-box 1.16.0, use {@link http_client} instead.
+     * @since 1.14.0
      */
     download_detour?: O
     update_interval?: duration
