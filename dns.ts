@@ -228,6 +228,11 @@ interface tailscale<T extends string, O extends string> extends item_with_tag<T>
      * if not enabled, NXDOMAIN will be returned for non-Tailscale domain queries.
      */
     accept_default_resolvers?: boolean
+    /**
+     * When enabled, single-label queries (e.g. my-device) are retried against each Tailscale search domain until one resolves.
+     * Default resolvers are not consulted for single-label queries regardless of accept_default_resolvers.
+     */
+    accept_search_domain?: boolean
 }
 interface resolved<T extends string, S extends string> extends item_with_tag<T> {
     type: 'resolved'
