@@ -45,6 +45,7 @@ interface acme<O extends string, H extends string, DS extends string> {
     }
     dns01_challenge?: dns01
     key_type?: 'ed25519' | 'p256' | 'p384' | 'rsa2048' | 'rsa4096'
+    profile?: string
     /**
      * @deprecated will be removed in sing-box 1.16.0.
      * @since 1.14.0
