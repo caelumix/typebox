@@ -19,6 +19,10 @@ export interface server_tls<O extends string, DS extends string, C extends strin
 }
 
 export interface client_tls extends base_tls {
+    /**
+     * @default go
+     */
+    engine?: 'go' | 'apple' | 'windows'
     disable_sni?: boolean
     ech?: client_ech
     utls?: utls
