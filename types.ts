@@ -89,6 +89,7 @@ export interface options {
     disable_cache?: boolean
     rewrite_ttl?: number
     client_subnet?: string
+    timeout?: duration
     disable_optimistic_cache?: boolean
 }
 

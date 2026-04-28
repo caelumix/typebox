@@ -65,6 +65,7 @@ export interface dns<
          */
         timeout: duration
     }
+    timeout?: duration
     reverse_mapping?: boolean
     strategy?: strategy
     disable_cache?: boolean
