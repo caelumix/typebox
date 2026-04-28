@@ -272,6 +272,9 @@ interface ssh<T extends string, O extends string, DS extends string> extends dia
     host_key?: listable<string>
     host_key_algorithms?: listable<string>
     client_version?: string
+    cipher?: listable<string>
+    mac?: listable<string>
+    kex_algorithm?: listable<string>
 }
 interface group_outbound<T extends string, O extends string> extends item_with_tag<T> {
     outbounds: O[]
