@@ -100,6 +100,7 @@ export declare namespace dns {
         | https<tag, outbound_tag, dns_server_tag>
         | h3<tag, outbound_tag, dns_server_tag>
         | dhcp<tag, outbound_tag, dns_server_tag>
+        | mdns<tag, outbound_tag, dns_server_tag>
         | fakeip<tag>
         | tailscale<tag, outbound_tag>
         | resolved<tag, service_tag>
@@ -206,6 +207,10 @@ interface h3<T extends string, O extends string, DS extends string> extends dial
 interface dhcp<T extends string, O extends string, DS extends string> extends dialer<O, DS>, item_with_tag<T> {
     type: 'dhcp'
     interface?: string
+}
+interface mdns<T extends string, O extends string, DS extends string> extends dialer<O, DS>, item_with_tag<T> {
+    type: 'mdns'
+    interface?: listable<string>
 }
 interface fakeip<T extends string> extends item_with_tag<T> {
     type: 'fakeip'
