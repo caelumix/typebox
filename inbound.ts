@@ -196,6 +196,11 @@ interface tun<T extends string, RS extends string> extends item_with_tag<T> {
     type: 'tun'
     interface_name?: string
     mtu?: number
+    /**
+     * @default hijack
+     */
+    dns_mode?: 'disabled' | 'native' | 'hijack'
+    dns_address?: listable<string>
     address: listable<string>
     auto_route?: boolean
     iproute2_table_index?: number
