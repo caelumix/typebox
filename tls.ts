@@ -39,7 +39,10 @@ export interface client_tls extends base_tls {
      * fake server name
      */
     spoof?: string
-    spoof_method?: 'wrong-sequence' | 'wrong-checksum'
+    /**
+     * @default wrong-sequence
+     */
+    spoof_method?: 'wrong-sequence' | 'wrong-checksum' | 'wrong-ack' | 'wrong-md5' | 'wrong-timestamp'
 }
 
 interface base_tls {

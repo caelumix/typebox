@@ -121,6 +121,14 @@ interface options {
      * Conflict with `tls_fragment`.
      */
     tls_record_fragment?: boolean
+    /**
+     * fake server name
+     */
+    tls_spoof?: string
+    /**
+     * @default wrong-sequence
+     */
+    tls_spoof_method?: 'wrong-sequence' | 'wrong-checksum' | 'wrong-ack' | 'wrong-md5' | 'wrong-timestamp'
 }
 interface action_sniff {
     action: 'sniff'
