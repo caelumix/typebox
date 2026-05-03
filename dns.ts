@@ -306,6 +306,7 @@ interface default_rule<O extends string, I extends string, RS extends string> ex
      * @since 1.14.0
      */
     rule_set_ip_cidr_accept_empty?: boolean
+    preferred_by?: listable<'hosts' | 'local' | 'mdns' | 'tailscale' | 'resolved'>
     match_response?: boolean
     ip_accept_any?: boolean
     response_rcode?: dns_rcode
