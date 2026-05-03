@@ -122,6 +122,7 @@ interface legacy<T extends string, O extends string, DS extends string> extends 
 interface local<T extends string, O extends string, DS extends string> extends dialer<O, DS>, item_with_tag<T> {
     type: 'local'
     prefer_go?: boolean
+    neighbor_domain?: listable<string>
 }
 interface hosts<T extends string> extends item_with_tag<T> {
     type: 'hosts'
