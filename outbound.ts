@@ -11,7 +11,7 @@
 import type { dialer, duration, headers, item_with_tag, listable, network, server, shadowsocks_method } from './types.ts'
 import type { transport } from './transport.ts'
 import type { client_tls as tls } from './tls.ts'
-import type { quic_client } from './http_client.ts'
+import type { headless_http_client, quic_client } from './http_client.ts'
 
 /**
  * @example
@@ -28,7 +28,8 @@ export const createOutbound = <
     tag extends string,
     outbound_tag extends string = never,
     dns_server_tag extends string = never,
->(outbound: outbound<tag, outbound_tag, dns_server_tag>): outbound<tag, outbound_tag, dns_server_tag> => outbound
+    http_client_tag extends string = never,
+>(outbound: outbound<tag, outbound_tag, dns_server_tag, http_client_tag>): outbound<tag, outbound_tag, dns_server_tag, http_client_tag> => outbound
 
 /**
  * @example
@@ -49,13 +50,14 @@ export const createOutbound = <
 export const createOutbounds = <
     tag extends string,
     dns_serever_tag extends string,
-    O extends outbound<tag, O['tag'], dns_serever_tag>,
+    http_client_tag extends string,
+    O extends outbound<tag, O['tag'], dns_serever_tag, http_client_tag>,
 >(outbounds: O[]): O[] => outbounds
 
 /**
  * You should not use this directly, instead use {@link createOutbound} or {@link createOutbounds}.
  */
-export type outbound<tag extends string, outbound_tag extends string, dns_server_tag extends string> =
+export type outbound<tag extends string, outbound_tag extends string, dns_server_tag extends string, http_client_tag extends string> =
     | direct<tag, outbound_tag, dns_server_tag>
     | block<tag>
     | socks<tag, outbound_tag, dns_server_tag>
@@ -68,7 +70,7 @@ export type outbound<tag extends string, outbound_tag extends string, dns_server
     | shadowtls<tag, outbound_tag, dns_server_tag>
     | vless<tag, outbound_tag, dns_server_tag>
     | tuic<tag, outbound_tag, dns_server_tag>
-    | hysteria2<tag, outbound_tag, dns_server_tag>
+    | hysteria2<tag, outbound_tag, dns_server_tag, http_client_tag>
     | anytls<tag, outbound_tag, dns_server_tag>
     | tor<tag, outbound_tag, dns_server_tag>
     | ssh<tag, outbound_tag, dns_server_tag>
@@ -214,7 +216,7 @@ interface tuic<T extends string, O extends string, DS extends string> extends re
     heartbeat?: duration
     tls: tls
 }
-interface hysteria2<T extends string, O extends string, DS extends string> extends remote<T, O, DS>, server {
+interface hysteria2<T extends string, O extends string, DS extends string, H extends string> extends remote<T, O, DS>, server {
     type: 'hysteria2'
     server_ports?: listable<string>
     hop_interval?: duration
@@ -232,6 +234,13 @@ interface hysteria2<T extends string, O extends string, DS extends string> exten
      */
     bbr_profile?: 'conservative' | 'standard' | 'aggressive'
     brutal_debug?: boolean
+    realm?: {
+        server_url: string
+        token?: string
+        realm_id: string
+        stun_servers: string[]
+        http_client?: H | headless_http_client<O, DS>
+    }
 }
 interface anytls<T extends string, O extends string, DS extends string> extends remote<T, O, DS>, server {
     type: 'anytls'

@@ -49,7 +49,7 @@ import type { service } from './service.ts'
  */
 export interface typebox<
     C extends certificate_provider<string, E['tag'] | O['tag'], H['tag'], DS['tag']>,
-    O extends outbound<string, E['tag'] | O['tag'], DS['tag']>,
+    O extends outbound<string, E['tag'] | O['tag'], DS['tag'], H['tag']>,
     E extends endpoint<string, E['tag'] | O['tag'], DS['tag'], H['tag']>,
     I extends inbound<string, E['tag'] | O['tag'], DS['tag'], E['tag'] | I['tag'], RS['tag'], C['tag'], H['tag']>,
     S extends service<string, E['tag'] | O['tag'], E['tag'] | I['tag'], DS['tag'], C['tag'], H['tag']>,
@@ -100,7 +100,7 @@ export const createTypebox = <
     DS extends dns.server<dns_server_tag, E['tag'] | O['tag'], S['tag'], DS['tag']> = never,
     RS extends route.rule_set<rule_set_tag, E['tag'] | O['tag'], H['tag'], DS['tag']> = never,
     C extends certificate_provider<certificate_provider_tag, E['tag'] | O['tag'], H['tag'], DS['tag']> = never,
-    O extends outbound<outbound_tag, E['tag'] | O['tag'], DS['tag']> = never,
+    O extends outbound<outbound_tag, E['tag'] | O['tag'], DS['tag'], H['tag']> = never,
     E extends endpoint<endpoint_tag, E['tag'] | O['tag'], DS['tag'], H['tag']> = never,
     I extends inbound<inbound_tag, E['tag'] | O['tag'], DS['tag'], E['tag'] | I['tag'], RS['tag'], C['tag'], H['tag']> = never,
     S extends service<service_tag, E['tag'] | O['tag'], E['tag'] | I['tag'], DS['tag'], C['tag'], H['tag']> = never,

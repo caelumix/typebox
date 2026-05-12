@@ -36,6 +36,7 @@ export type service<
     | ssm_api<tag, outbound_tag, inbound_tag, dns_server_tag, certificate_provider_tag, http_client_tag>
     | ccm<tag, outbound_tag, inbound_tag, dns_server_tag, certificate_provider_tag, http_client_tag>
     | ocm<tag, outbound_tag, inbound_tag, dns_server_tag, certificate_provider_tag, http_client_tag>
+    | hysteria_realm<tag, outbound_tag, inbound_tag, dns_server_tag, certificate_provider_tag, http_client_tag>
 
 interface derp<T extends string, O extends string, I extends string, DS extends string, C extends string, H extends string> extends listen<T, I> {
     type: 'derp'
@@ -82,7 +83,7 @@ interface ccm<
     users?: token_auth[]
     headers?: headers
     detour?: O
-    tls: server_tls<O, DS, C, H>
+    tls?: server_tls<O, DS, C, H>
 }
 
 interface ocm<
@@ -99,7 +100,19 @@ interface ocm<
     users?: token_auth[]
     headers?: headers
     detour?: O
-    tls: server_tls<O, DS, C, H>
+    tls?: server_tls<O, DS, C, H>
+}
+
+interface hysteria_realm<T extends string, O extends string, I extends string, DS extends string, C extends string, H extends string> extends listen<T, I> {
+    type: 'hysteria-realm'
+    tls?: server_tls<O, DS, C, H>
+    users: hysteria_realm_user[]
+}
+
+interface hysteria_realm_user {
+    name: string
+    token: string
+    max_realms?: number
 }
 
 interface token_auth {

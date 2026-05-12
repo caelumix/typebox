@@ -8,9 +8,10 @@
  * ```
  */
 
-import type { dialer, duration, headers, item_with_tag, listable, listen, network, server, shadowsocks_method } from './types.ts'
+import type { dialer, duration, headers, item_with_tag, listable, listen, network, resolver, server, shadowsocks_method } from './types.ts'
 import type { server_tls as tls } from './tls.ts'
 import type { transport } from './transport.ts'
+import type { headless_http_client } from './http_client.ts'
 
 export const createInbound = <
     tag extends string,
@@ -182,6 +183,14 @@ interface hysteria2<T extends string, O extends string, DS extends string, I ext
      */
     bbr_profile?: 'conservative' | 'standard' | 'aggressive'
     brutal_debug?: boolean
+    realm?: {
+        server_url: string
+        token?: string
+        realm_id: string
+        stun_servers: string[]
+        stun_domain_resolver?: DS | resolver<DS>
+        http_client?: H | headless_http_client<O, DS>
+    }
 }
 interface anytls<T extends string, O extends string, DS extends string, I extends string, C extends string, H extends string> extends listen<T, I> {
     type: 'anytls'
