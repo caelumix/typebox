@@ -54,16 +54,18 @@ interface base_ech {
     dynamic_record_sizing_disabled?: boolean
 }
 
-type server_ech = base_ech & (
-    | {
-        key: listable<string>
-        key_path?: string
-    }
-    | {
-        key?: listable<string>
-        key_path: string
-    }
-)
+type server_ech =
+    & base_ech
+    & (
+        | {
+            key: listable<string>
+            key_path?: string
+        }
+        | {
+            key?: listable<string>
+            key_path: string
+        }
+    )
 
 interface client_ech extends base_ech {
     config?: listable<string>
