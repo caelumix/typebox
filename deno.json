@@ -1,35 +1,28 @@
 {
-    "$schema": "https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json",
-    "name": "@zhexin/typebox",
-    "version": "1.13.32",
-    "exports": {
-        ".": "./mod.ts",
-        "./certificate": "./certificate.ts",
-        "./dns": "./dns.ts",
-        "./endpoint": "./endpoint.ts",
-        "./experimental": "./experimental.ts",
-        "./inbound": "./inbound.ts",
-        "./log": "./log.ts",
-        "./ntp": "./ntp.ts",
-        "./outbound": "./outbound.ts",
-        "./route": "./route.ts",
-        "./service": "./service.ts"
-    },
-    "fmt": {
-        "lineWidth": 160,
-        "indentWidth": 4,
-        "semiColons": false,
-        "singleQuote": true,
-        "proseWrap": "preserve"
-    },
-    "publish": {
-        "include": [
-            "./*.ts",
-            "./README.md"
-        ],
-        "exclude": [
-            ".github",
-            "./*.test.ts"
-        ]
-    }
+  "$schema": "https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json",
+  "name": "@zhexin/typebox",
+  "version": "1.13.32",
+  "exports": {
+    ".": "./mod.ts",
+    "./certificate": "./certificate.ts",
+    "./dns": "./dns.ts",
+    "./endpoint": "./endpoint.ts",
+    "./experimental": "./experimental.ts",
+    "./inbound": "./inbound.ts",
+    "./log": "./log.ts",
+    "./ntp": "./ntp.ts",
+    "./outbound": "./outbound.ts",
+    "./route": "./route.ts",
+    "./service": "./service.ts"
+  },
+  "publish": {
+    "include": [
+      "./*.ts",
+      "./README.md"
+    ],
+    "exclude": [
+      ".github",
+      "./*.test.ts"
+    ]
+  }
 }

@@ -8,19 +8,19 @@
  * ```
  */
 
-import type { listable } from './types.ts'
+import type { listable } from "./types.ts";
 
-export const createCertificate = (c: certificate): certificate => c
+export const createCertificate = (c: certificate): certificate => c;
 
 /**
  * You should not use this directly, instead use {@link createCertificate}.
  */
 export interface certificate {
-    /**
-     * @default system
-     */
-    store?: 'system' | 'mozilla' | 'chrome' | 'none'
-    certificate?: listable<string>
-    certificate_path?: listable<string>
-    certificate_directory_path?: listable<string>
+  /**
+   * @default system
+   */
+  store?: "system" | "mozilla" | "chrome" | "none";
+  certificate?: listable<string>;
+  certificate_path?: listable<string>;
+  certificate_directory_path?: listable<string>;
 }

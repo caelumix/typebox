@@ -1,168 +1,180 @@
-import type { dialer, duration, listable, server } from './types.ts'
+import type { dialer, duration, listable, server } from "./types.ts";
 
-export interface server_tls<O extends string, DS extends string> extends base_tls {
-    key?: listable<string>
-    key_path?: string
-    acme?: acme
-    ech?: server_ech
-    reality?: server_reality<O, DS>
-    client_authentication?: client_authentication
-    client_certificate?: listable<string>
-    client_certificate_path?: listable<string>
-    client_certificate_public_key_sha256?: listable<string>
+export interface server_tls<O extends string, DS extends string>
+  extends base_tls {
+  key?: listable<string>;
+  key_path?: string;
+  acme?: acme;
+  ech?: server_ech;
+  reality?: server_reality<O, DS>;
+  client_authentication?: client_authentication;
+  client_certificate?: listable<string>;
+  client_certificate_path?: listable<string>;
+  client_certificate_public_key_sha256?: listable<string>;
 }
 
 export interface client_tls extends base_tls {
-    disable_sni?: boolean
-    ech?: client_ech
-    utls?: utls
-    reality?: client_reality
-    fragment?: boolean
-    fragment_fallback_delay?: duration
-    record_fragment?: boolean
-    certificate_public_key_sha256?: listable<string>
-    client_certificate?: listable<string>
-    client_certificate_path?: string
-    client_key?: listable<string>
-    client_key_path?: string
+  disable_sni?: boolean;
+  ech?: client_ech;
+  utls?: utls;
+  reality?: client_reality;
+  fragment?: boolean;
+  fragment_fallback_delay?: duration;
+  record_fragment?: boolean;
+  certificate_public_key_sha256?: listable<string>;
+  client_certificate?: listable<string>;
+  client_certificate_path?: string;
+  client_key?: listable<string>;
+  client_key_path?: string;
 }
 
 interface base_tls {
-    enabled: true
-    server_name?: string
-    insecure?: boolean
-    alpn?: listable<string>
-    min_version?: tls_version
-    max_version?: tls_version
-    cipher_suites?: listable<cipher_suites>
-    certificate?: listable<string>
-    certificate_path?: string
-    kernel_tx?: boolean
-    kernel_rx?: boolean
-    curve_preferences?: listable<curve_preference>
+  enabled: true;
+  server_name?: string;
+  insecure?: boolean;
+  alpn?: listable<string>;
+  min_version?: tls_version;
+  max_version?: tls_version;
+  cipher_suites?: listable<cipher_suites>;
+  certificate?: listable<string>;
+  certificate_path?: string;
+  kernel_tx?: boolean;
+  kernel_rx?: boolean;
+  curve_preferences?: listable<curve_preference>;
 }
 
 interface base_ech {
-    enabled: true
-    /**
-     * @deprecated ECH support has been migrated to use stdlib in sing-box 1.12.0, which does not come with support for PQ signature schemes, so pq_signature_schemes_enabled has been deprecated and no longer works.
-     */
-    pq_signature_schemes_enabled?: boolean
-    /**
-     * @deprecated dynamic_record_sizing_disabled has nothing to do with ECH, was added by mistake, has been deprecated and no longer works.
-     */
-    dynamic_record_sizing_disabled?: boolean
+  enabled: true;
+  /**
+   * @deprecated ECH support has been migrated to use stdlib in sing-box 1.12.0, which does not come with support for PQ signature schemes, so pq_signature_schemes_enabled has been deprecated and no longer works.
+   */
+  pq_signature_schemes_enabled?: boolean;
+  /**
+   * @deprecated dynamic_record_sizing_disabled has nothing to do with ECH, was added by mistake, has been deprecated and no longer works.
+   */
+  dynamic_record_sizing_disabled?: boolean;
 }
 
 type server_ech =
-    & base_ech
-    & (
-        | {
-            key: listable<string>
-            key_path?: string
-        }
-        | {
-            key?: listable<string>
-            key_path: string
-        }
-    )
+  & base_ech
+  & (
+    | {
+      key: listable<string>;
+      key_path?: string;
+    }
+    | {
+      key?: listable<string>;
+      key_path: string;
+    }
+  );
 
 interface client_ech extends base_ech {
-    config?: listable<string>
-    config_path?: string
-    query_server_name?: string
+  config?: listable<string>;
+  config_path?: string;
+  query_server_name?: string;
 }
 
 interface base_reality {
-    enabled: true
-    short_id: string
+  enabled: true;
+  short_id: string;
 }
 
-interface server_reality<O extends string, DS extends string> extends base_reality {
-    handshake: dialer<O, DS> & server
-    private_key: string
-    max_time_difference?: duration
+interface server_reality<O extends string, DS extends string>
+  extends base_reality {
+  handshake: dialer<O, DS> & server;
+  private_key: string;
+  max_time_difference?: duration;
 }
 
 interface client_reality extends base_reality {
-    public_key: string
+  public_key: string;
 }
 
-type dns01 = dns01_ali | dns01_cf | acmedns
+type dns01 = dns01_ali | dns01_cf | acmedns;
 
 interface dns01_ali {
-    provider: 'alidns'
-    access_key_id: string
-    access_key_secret: string
-    region_id: string
-    security_token: string
+  provider: "alidns";
+  access_key_id: string;
+  access_key_secret: string;
+  region_id: string;
+  security_token: string;
 }
 
 interface dns01_cf {
-    provider: 'cloudflare'
-    api_token: string
-    zone_token?: string
+  provider: "cloudflare";
+  api_token: string;
+  zone_token?: string;
 }
 
 interface acmedns {
-    provider: 'acmedns'
-    username: string
-    password: string
-    subdomain: string
-    server_url: string
+  provider: "acmedns";
+  username: string;
+  password: string;
+  subdomain: string;
+  server_url: string;
 }
 
 interface acme {
-    domain?: listable<string>
-    data_directory?: string
-    default_server_name?: string
-    email?: string
-    provider?: string
-    disable_http_challenge?: boolean
-    disable_tls_alpn_challenge?: boolean
-    alternative_http_port?: number
-    alternative_tls_port?: number
-    external_account?: {
-        key_id: string
-        mac_key: string
-    }
-    dns01_challenge?: dns01
+  domain?: listable<string>;
+  data_directory?: string;
+  default_server_name?: string;
+  email?: string;
+  provider?: string;
+  disable_http_challenge?: boolean;
+  disable_tls_alpn_challenge?: boolean;
+  alternative_http_port?: number;
+  alternative_tls_port?: number;
+  external_account?: {
+    key_id: string;
+    mac_key: string;
+  };
+  dns01_challenge?: dns01;
 }
 
 interface utls {
-    enabled: true
-    fingerprint?: fingerprint
+  enabled: true;
+  fingerprint?: fingerprint;
 }
 
-type fingerprint = 'chrome' | 'firefox' | 'edge' | 'safari' | '360' | 'qq' | 'ios' | 'android' | 'random' | 'randomized'
-type tls_version = '1.0' | '1.1' | '1.2' | '1.3'
+type fingerprint =
+  | "chrome"
+  | "firefox"
+  | "edge"
+  | "safari"
+  | "360"
+  | "qq"
+  | "ios"
+  | "android"
+  | "random"
+  | "randomized";
+type tls_version = "1.0" | "1.1" | "1.2" | "1.3";
 type cipher_suites =
-    | 'TLS_RSA_WITH_AES_128_CBC_SHA'
-    | 'TLS_RSA_WITH_AES_256_CBC_SHA'
-    | 'TLS_RSA_WITH_AES_128_GCM_SHA256'
-    | 'TLS_RSA_WITH_AES_256_GCM_SHA384'
-    | 'TLS_AES_128_GCM_SHA256'
-    | 'TLS_AES_256_GCM_SHA384'
-    | 'TLS_CHACHA20_POLY1305_SHA256'
-    | 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA'
-    | 'TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA'
-    | 'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA'
-    | 'TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA'
-    | 'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256'
-    | 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
-    | 'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
-    | 'TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384'
-    | 'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256'
-    | 'TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256'
+  | "TLS_RSA_WITH_AES_128_CBC_SHA"
+  | "TLS_RSA_WITH_AES_256_CBC_SHA"
+  | "TLS_RSA_WITH_AES_128_GCM_SHA256"
+  | "TLS_RSA_WITH_AES_256_GCM_SHA384"
+  | "TLS_AES_128_GCM_SHA256"
+  | "TLS_AES_256_GCM_SHA384"
+  | "TLS_CHACHA20_POLY1305_SHA256"
+  | "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA"
+  | "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA"
+  | "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA"
+  | "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
+  | "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+  | "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"
+  | "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+  | "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+  | "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256"
+  | "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256";
 type curve_preference =
-    | 'P256'
-    | 'P384'
-    | 'P521'
-    | 'X25519'
-    | 'X25519MLKEM768'
+  | "P256"
+  | "P384"
+  | "P521"
+  | "X25519"
+  | "X25519MLKEM768";
 type client_authentication =
-    | 'no'
-    | 'request'
-    | 'require-any'
-    | 'verify-if-given'
-    | 'require-and-verify'
+  | "no"
+  | "request"
+  | "require-any"
+  | "verify-if-given"
+  | "require-and-verify";
