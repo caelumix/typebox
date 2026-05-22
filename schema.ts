@@ -15,7 +15,7 @@ export interface schema {
     $schema?: string
     log?: log
     dns?: dns<string, string, string, string, dns.server<string, string, string, string>>
-    endpoints?: endpoint<string, string, string, string>[]
+    endpoints?: endpoint<string, string, string>[]
     inbounds?: inbound<string, string, string, string, string, string, string>[]
     outbounds?: outbound<string, string, string, string>[]
     route?: route<string, string, string, string, route.rule_set<string, string, string, string>>
