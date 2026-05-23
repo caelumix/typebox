@@ -1,8 +1,9 @@
 name: Publish
+
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 jobs:
   publish:
@@ -15,8 +16,27 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: latest
+          cache: true
+
       - name: Publish package
-        run: npx jsr publish
+        run: deno publish
+
+      - run: deno pack --output typebox.tgz
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+
+      - run: tar -xzf typebox.tgz
+      - working-directory: package
+        run: |
+          npm pkg set repository.url="git+https://github.com/jiang-zhexin/typebox.git"
+          npm publish
 
   releases:
     runs-on: ubuntu-latest
