@@ -10,13 +10,21 @@
 
 import type { duration, listable } from "./types.ts";
 
-export const createExperimental = (e: experimental): experimental => e;
+export function createExperimental(e: experimental): experimental {
+  return e;
+}
 
-export const createCacheFile = (c: cache_file): cache_file => c;
+export function createCacheFile(c: cache_file): cache_file {
+  return c;
+}
 
-export const createClashApi = (c: clash_api): clash_api => c;
+export function createClashApi(c: clash_api): clash_api {
+  return c;
+}
 
-export const createV2rayApi = (v: v2ray_api): v2ray_api => v;
+export function createV2rayApi(v: v2ray_api): v2ray_api {
+  return v;
+}
 
 /**
  * You should not use this directly, instead use {@link createExperimental}.

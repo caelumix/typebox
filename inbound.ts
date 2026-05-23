@@ -8,6 +8,8 @@
  * ```
  */
 
+import type { server_tls as tls } from "./tls.ts";
+import type { transport } from "./transport.ts";
 import type {
   dialer,
   duration,
@@ -18,10 +20,8 @@ import type {
   server,
   shadowsocks_method,
 } from "./types.ts";
-import type { server_tls as tls } from "./tls.ts";
-import type { transport } from "./transport.ts";
 
-export const createInbound = <
+export function createInbound<
   tag extends string,
   inbound_tag extends string = never,
   outbound_tag extends string = never,
@@ -35,16 +35,19 @@ export const createInbound = <
     inbound_tag,
     rule_set_tag
   >,
-): inbound<tag, outbound_tag, dns_server_tag, inbound_tag, rule_set_tag> =>
-  inbound;
+): inbound<tag, outbound_tag, dns_server_tag, inbound_tag, rule_set_tag> {
+  return inbound;
+}
 
-export const createInbounds = <
+export function createInbounds<
   tag extends string,
   outbound_tag extends string,
   dns_server_tag extends string,
   rule_set_tag extends string,
   I extends inbound<tag, outbound_tag, dns_server_tag, I["tag"], rule_set_tag>,
->(inbounds: I[]): I[] => inbounds;
+>(inbounds: I[]): I[] {
+  return inbounds;
+}
 
 /**
  * You should not use this directly, instead use {@link createInbound} or {@link createInbounds}.

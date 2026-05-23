@@ -8,6 +8,8 @@
  * ```
  */
 
+import type { client_tls as tls } from "./tls.ts";
+import type { transport } from "./transport.ts";
 import type {
   dialer,
   duration,
@@ -18,8 +20,6 @@ import type {
   server,
   shadowsocks_method,
 } from "./types.ts";
-import type { transport } from "./transport.ts";
-import type { client_tls as tls } from "./tls.ts";
 
 /**
  * @example
@@ -32,13 +32,15 @@ import type { client_tls as tls } from "./tls.ts";
  * })
  * ```
  */
-export const createOutbound = <
+export function createOutbound<
   tag extends string,
   outbound_tag extends string = never,
   dns_server_tag extends string = never,
 >(
   outbound: outbound<tag, outbound_tag, dns_server_tag>,
-): outbound<tag, outbound_tag, dns_server_tag> => outbound;
+): outbound<tag, outbound_tag, dns_server_tag> {
+  return outbound;
+}
 
 /**
  * @example
@@ -56,11 +58,13 @@ export const createOutbound = <
  * ])
  * ```
  */
-export const createOutbounds = <
+export function createOutbounds<
   tag extends string,
   dns_serever_tag extends string,
   O extends outbound<tag, O["tag"], dns_serever_tag>,
->(outbounds: O[]): O[] => outbounds;
+>(outbounds: O[]): O[] {
+  return outbounds;
+}
 
 /**
  * You should not use this directly, instead use {@link createOutbound} or {@link createOutbounds}.

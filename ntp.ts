@@ -10,10 +10,12 @@
 
 import type { dialer, duration, server } from "./types.ts";
 
-export const createNtp = <
+export function createNtp<
   outbound_tag extends string = never,
   dns_server_tag extends string = never,
->(n: ntp<outbound_tag, dns_server_tag>): ntp<outbound_tag, dns_server_tag> => n;
+>(n: ntp<outbound_tag, dns_server_tag>): ntp<outbound_tag, dns_server_tag> {
+  return n;
+}
 
 /**
  * You should not use this directly, instead use {@link createNtp}.
