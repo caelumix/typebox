@@ -18,13 +18,13 @@ import type {
   dialer,
   dns_network,
   duration,
+  headers,
   item_with_tag,
   listable,
   options,
   resolver,
   strategy,
 } from "./types.ts";
-import type { headers } from "./types.ts";
 
 /**
  * @example
@@ -37,30 +37,36 @@ import type { headers } from "./types.ts";
  * })
  * ```
  */
-export const createDnsServer = <
+export function createDnsServer<
   tag extends string,
   dns_server_tag extends string = never,
   outbound_tag extends string = never,
   service_tag extends string = never,
 >(
   server: dns.server<tag, outbound_tag, service_tag, dns_server_tag>,
-): dns.server<tag, outbound_tag, service_tag, dns_server_tag> => server;
+): dns.server<tag, outbound_tag, service_tag, dns_server_tag> {
+  return server;
+}
 
-export const createDnsServers = <
+export function createDnsServers<
   tag extends string,
   outbound_tag extends string,
   service_tag extends string,
   DS extends dns.server<tag, outbound_tag, service_tag, DS["tag"]>,
->(server: DS[]): DS[] => server;
+>(server: DS[]): DS[] {
+  return server;
+}
 
-export const createDnsRule = <
+export function createDnsRule<
   dns_server_tag extends string = never,
   outbound_tag extends string = never,
   inbound_tag extends string = never,
   rule_set_tag extends string = never,
 >(
   r: rule<outbound_tag, inbound_tag, rule_set_tag, dns_server_tag>,
-): rule<outbound_tag, inbound_tag, rule_set_tag, dns_server_tag> => r;
+): rule<outbound_tag, inbound_tag, rule_set_tag, dns_server_tag> {
+  return r;
+}
 
 /**
  * You should not use this directly, instead use {@link createDnsServer} or {@link createDnsRule}.

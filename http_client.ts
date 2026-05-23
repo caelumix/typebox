@@ -17,13 +17,15 @@ import type {
   memory_bytes,
 } from "./types.ts";
 
-export const createHttpClient = <
+export function createHttpClient<
   tag extends string,
   outbound_tag extends string = never,
   dns_server_tag extends string = never,
 >(
   h: http_client<tag, outbound_tag, dns_server_tag>,
-): http_client<tag, outbound_tag, dns_server_tag> => h;
+): http_client<tag, outbound_tag, dns_server_tag> {
+  return h;
+}
 
 export type http_client<T extends string, O extends string, DS extends string> =
   & item_with_tag<T>

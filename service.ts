@@ -8,11 +8,11 @@
  * ```
  */
 
-import type { dialer, headers, listable, listen, server } from "./types.ts";
-import type { client_tls, server_tls } from "./tls.ts";
 import type { headless_http_client } from "./http_client.ts";
+import type { client_tls, server_tls } from "./tls.ts";
+import type { dialer, headers, listable, listen, server } from "./types.ts";
 
-export const createService = <
+export function createService<
   tag extends string,
   outbound_tag extends string,
   inbound_tag extends string,
@@ -35,7 +35,9 @@ export const createService = <
   dns_server_tag,
   certificate_provider_tag,
   http_client_tag
-> => service;
+> {
+  return service;
+}
 
 export type service<
   tag extends string,

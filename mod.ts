@@ -114,7 +114,7 @@ export interface typebox<
  * })
  * ```
  */
-export const createTypebox = <
+export function createTypebox<
   outbound_tag extends string,
   inbound_tag extends string,
   endpoint_tag extends string,
@@ -165,4 +165,6 @@ export const createTypebox = <
     never,
 >(
   typebox: typebox<C, O, E, I, S, DS, RS, H>,
-): typebox<C, O, E, I, S, DS, RS, H> => typebox;
+): typebox<C, O, E, I, S, DS, RS, H> {
+  return typebox;
+}

@@ -10,20 +10,24 @@
 
 import type { dialer, duration, item_with_tag, listable } from "./types.ts";
 
-export const createEndpoint = <
+export function createEndpoint<
   tag extends string,
   outbound_tag extends string = never,
   dns_server_tag extends string = never,
 >(
   endpoint: endpoint<tag, outbound_tag, dns_server_tag>,
-): endpoint<tag, outbound_tag, dns_server_tag> => endpoint;
+): endpoint<tag, outbound_tag, dns_server_tag> {
+  return endpoint;
+}
 
-export const createEndpoints = <
+export function createEndpoints<
   tag extends string,
   outbound_tag extends string,
   dns_server_tag extends string,
   E extends endpoint<tag, outbound_tag | E["tag"], dns_server_tag>,
->(endpoints: E[]): E[] => endpoints;
+>(endpoints: E[]): E[] {
+  return endpoints;
+}
 
 /**
  * You should not use this directly, instead use {@link createEndpoint} or {@link createEndpoints}.

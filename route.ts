@@ -37,14 +37,16 @@ import type {
  * })
  * ```
  */
-export const createRuleSet = <
+export function createRuleSet<
   tag extends string,
   outbound_tag extends string = never,
   http_client_tag extends string = never,
   dns_server_tag extends string = never,
 >(
   rs: rule_set<tag, outbound_tag, http_client_tag, dns_server_tag>,
-): rule_set<tag, outbound_tag, http_client_tag, dns_server_tag> => rs;
+): rule_set<tag, outbound_tag, http_client_tag, dns_server_tag> {
+  return rs;
+}
 
 /**
  * @example
@@ -55,14 +57,16 @@ export const createRuleSet = <
  * })
  * ```
  */
-export const createRule = <
+export function createRule<
   outbound_tag extends string = never,
   inbound_tag extends string = never,
   rule_set_tag extends string = never,
   dns_server_tag extends string = never,
 >(
   r: rule<outbound_tag, inbound_tag, rule_set_tag, dns_server_tag>,
-): rule<outbound_tag, inbound_tag, rule_set_tag, dns_server_tag> => r;
+): rule<outbound_tag, inbound_tag, rule_set_tag, dns_server_tag> {
+  return r;
+}
 
 /**
  * You should not use this directly, instead use {@link createRuleSet} or {@link createRule}.

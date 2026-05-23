@@ -10,7 +10,9 @@
 
 import type { listable } from "./types.ts";
 
-export const createCertificate = (c: certificate): certificate => c;
+export function createCertificate(c: certificate): certificate {
+  return c;
+}
 
 /**
  * You should not use this directly, instead use {@link createCertificate}.

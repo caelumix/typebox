@@ -11,15 +11,16 @@
 import type { headless_http_client } from "./http_client.ts";
 import type { item_with_tag, listable } from "./types.ts";
 
-export const createCertificateProvider = <
+export function createCertificateProvider<
   tag extends string,
   outbound_tag extends string = never,
   http_client_tag extends string = never,
   dns_server_tag extends string = never,
 >(
   cp: certificate_provider<tag, outbound_tag, http_client_tag, dns_server_tag>,
-): certificate_provider<tag, outbound_tag, http_client_tag, dns_server_tag> =>
-  cp;
+): certificate_provider<tag, outbound_tag, http_client_tag, dns_server_tag> {
+  return cp;
+}
 
 export type certificate_provider<
   T extends string,
