@@ -47,13 +47,13 @@ installing anything on your machine.
 
 ```bash
 # Node.js
-npx jsr add @zhexin/typebox
-yarn add jsr:@zhexin/typebox
-pnpm add jsr:@zhexin/typebox
+npm add @zhexin/typebox
+yarn add @zhexin/typebox
+pnpm add @zhexin/typebox
 # Deno
 deno add jsr:@zhexin/typebox
 # Bun
-bunx jsr add @zhexin/typebox
+bun add @zhexin/typebox
 ```
 
 Coding
