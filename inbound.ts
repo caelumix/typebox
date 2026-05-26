@@ -339,10 +339,7 @@ interface hysteria2<
   type: "hysteria2";
   up_mbps?: number;
   down_mbps?: number;
-  obfs?: {
-    type: "salamander";
-    password: string;
-  };
+  obfs?: obfs;
   users: user[];
   ignore_client_bandwidth?: boolean;
   tls: tls<O, DS, C, H>;
@@ -510,4 +507,22 @@ interface masquerade_http {
   status_code?: number;
   headers?: headers;
   content: string;
+}
+
+type obfs = salamander | gecko;
+interface salamander {
+  type: "salamander";
+  password: string;
+}
+interface gecko {
+  type: "gecko";
+  password: string;
+  /**
+   * @default 512
+   */
+  min_packet_size?: number;
+  /**
+   * @default 1200
+   */
+  max_packet_size?: number;
 }
