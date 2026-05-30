@@ -36,7 +36,7 @@ jobs:
       - working-directory: package
         run: |
           npm pkg set repository.url="git+https://github.com/jiang-zhexin/typebox.git"
-          npm publish
+          npm publish --tag latest
 
   releases:
     runs-on: ubuntu-latest
