@@ -192,9 +192,17 @@ interface naive<T extends string, O extends string, DS extends string>
     | "certificate_public_key_sha256"
   >;
 }
-interface hysteria<T extends string, O extends string, DS extends string>
-  extends remote<T, O, DS>, server, Omit<quic_client, "version"> {
+/** server_port and server_ports are mutually exclusive for hysteria[2] */
+type hy_server_port =
+  | { server_port: number; server_ports?: never }
+  | { server_port?: never; server_ports: listable<string> };
+interface base_hysteria<T extends string, O extends string, DS extends string>
+  extends
+    remote<T, O, DS>,
+    Omit<server, "server_port">,
+    Omit<quic_client, "version"> {
   type: "hysteria";
+  hop_interval?: duration;
   up: string;
   up_mbps: number;
   down: string;
@@ -219,6 +227,9 @@ interface hysteria<T extends string, O extends string, DS extends string>
   disable_mtu_discovery?: boolean;
   tls: tls;
 }
+type hysteria<T extends string, O extends string, DS extends string> =
+  & base_hysteria<T, O, DS>
+  & hy_server_port;
 interface shadowtls<T extends string, O extends string, DS extends string>
   extends dialer<O, DS>, server, item_with_tag<T> {
   type: "shadowtls";
@@ -248,14 +259,13 @@ interface tuic<T extends string, O extends string, DS extends string>
   heartbeat?: duration;
   tls: tls;
 }
-interface hysteria2<
+interface base_hysteria2<
   T extends string,
   O extends string,
   DS extends string,
   H extends string,
-> extends remote<T, O, DS>, server {
+> extends remote<T, O, DS>, Omit<server, "server_port"> {
   type: "hysteria2";
-  server_ports?: listable<string>;
   hop_interval?: duration;
   hop_interval_max?: duration;
   up_mbps?: number;
@@ -279,6 +289,14 @@ interface hysteria2<
     http_client?: H | headless_http_client<O, DS>;
   };
 }
+type hysteria2<
+  T extends string,
+  O extends string,
+  DS extends string,
+  H extends string,
+> =
+  & base_hysteria2<T, O, DS, H>
+  & hy_server_port;
 interface anytls<T extends string, O extends string, DS extends string>
   extends remote<T, O, DS>, server {
   type: "anytls";
