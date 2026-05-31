@@ -128,6 +128,17 @@ interface tailscale<T extends string, O extends string, DS extends string>
    * @default 5m
    */
   udp_timeout?: duration;
+  /**
+   * Run a Tailscale SSH server on tailnet port 22.
+   */
+  ssh_server?: true | ssh_server;
+}
+
+interface ssh_server {
+  enabled: true;
+  disable_pty?: boolean;
+  disable_sftp?: boolean;
+  disable_forwarding?: boolean;
 }
 
 interface peer {
