@@ -47,6 +47,14 @@ export type service<
   certificate_provider_tag extends string,
   http_client_tag extends string,
 > =
+  | api<
+    tag,
+    outbound_tag,
+    inbound_tag,
+    dns_server_tag,
+    certificate_provider_tag,
+    http_client_tag
+  >
   | derp<
     tag,
     outbound_tag,
@@ -88,6 +96,21 @@ export type service<
     certificate_provider_tag,
     http_client_tag
   >;
+
+interface api<
+  T extends string,
+  O extends string,
+  I extends string,
+  DS extends string,
+  C extends string,
+  H extends string,
+> extends listen<T, I> {
+  type: "api";
+  secret?: string;
+  access_control_allow_origin?: listable<string>;
+  access_control_allow_private_network?: boolean;
+  tls?: server_tls<O, DS, C, H>;
+}
 
 interface derp<
   T extends string,
