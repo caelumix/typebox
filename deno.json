@@ -13,6 +13,7 @@
     "./ntp": "./ntp.ts",
     "./outbound": "./outbound.ts",
     "./route": "./route.ts",
+    "./rule_set": "./rule_set.ts",
     "./service": "./service.ts"
   },
   "publish": {
