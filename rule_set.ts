@@ -8,7 +8,7 @@ export type rule_set =
   | rule_set1;
 
 type rule_set4 = {
-  version: 2;
+  version: 4;
   rules: headless_rule<version4>[];
 };
 type rule_set3 = {
