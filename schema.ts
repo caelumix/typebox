@@ -9,6 +9,7 @@ import type { log } from "./log.ts";
 import type { ntp } from "./ntp.ts";
 import type { outbound } from "./outbound.ts";
 import type { route } from "./route.ts";
+import type { rule_set } from "./rule_set.ts";
 import type { service } from "./service.ts";
 
 export interface schema {
@@ -43,3 +44,5 @@ export interface schema {
   >[];
   http_clients?: http_client<string, string, string>[];
 }
+
+export type rule_set_schema = { $schema?: string } & rule_set;
