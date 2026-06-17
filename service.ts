@@ -10,7 +10,14 @@
 
 import type { headless_http_client } from "./http_client.ts";
 import type { client_tls, server_tls } from "./tls.ts";
-import type { dialer, headers, listable, listen, server } from "./types.ts";
+import type {
+  dialer,
+  duration,
+  headers,
+  listable,
+  listen,
+  server,
+} from "./types.ts";
 
 export function createService<
   tag extends string,
@@ -109,6 +116,25 @@ interface api<
   secret?: string;
   access_control_allow_origin?: listable<string>;
   access_control_allow_private_network?: boolean;
+  dashboard?:
+    | true
+    | string
+    | {
+      enable: true;
+      /**
+       * @default dashboard
+       */
+      path?: string;
+      /**
+       * @default https://github.com/SagerNet/sing-box-dashboard/archive/refs/heads/gh-pages.zip
+       */
+      download_url?: string;
+      http_client?: H | headless_http_client<O, DS>;
+      /**
+       * @default 1d
+       */
+      update_interval?: duration;
+    };
   tls?: server_tls<O, DS, C, H>;
 }
 
