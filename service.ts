@@ -14,6 +14,7 @@ import type {
   dialer,
   duration,
   headers,
+  item_with_tag,
   listable,
   listen,
   server,
@@ -102,6 +103,15 @@ export type service<
     dns_server_tag,
     certificate_provider_tag,
     http_client_tag
+  >
+  | usbip_server<
+    tag,
+    inbound_tag
+  >
+  | usbip_client<
+    tag,
+    outbound_tag,
+    dns_server_tag
   >;
 
 interface api<
@@ -221,6 +231,36 @@ interface hysteria_realm<
   type: "hysteria-realm";
   tls?: server_tls<O, DS, C, H>;
   users: hysteria_realm_user[];
+}
+
+interface usbip_server<
+  T extends string,
+  I extends string,
+> extends listen<T, I> {
+  type: "usbip-server";
+  provider?: "default" | "dynamic";
+  devices: listable<device>;
+}
+
+interface usbip_client<
+  T extends string,
+  O extends string,
+  DS extends string,
+> extends dialer<O, DS>, item_with_tag<T> {
+  type: "usbip-client";
+  server: string;
+  /**
+   * @default 3240
+   */
+  server_port?: number;
+  devices?: listable<device>;
+}
+
+interface device {
+  bus_id: string;
+  vendor_id: number;
+  product_id: number;
+  serial: string;
 }
 
 interface hysteria_realm_user {
