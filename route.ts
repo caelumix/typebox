@@ -10,10 +10,10 @@
 
 import type {
   action_reject,
-  base_default_rule,
   base_logical_rule,
   default_rule_with_metadata,
 } from "./rule.ts";
+import type { headless_rule } from "./rule_set.ts";
 import type {
   duration,
   item_with_tag,
@@ -193,14 +193,6 @@ interface remote_rule_set<T extends string, O extends string>
   url: string;
   download_detour?: O;
   update_interval?: duration;
-}
-
-type headless_rule = default_headless_rule | logical_headless_rule;
-interface default_headless_rule extends base_default_rule {
-  query_type?: listable<string | number>;
-}
-interface logical_headless_rule extends base_logical_rule {
-  rules: headless_rule[];
 }
 
 type quic_client = "chromium" | "safari" | "firefox" | "quic-go";

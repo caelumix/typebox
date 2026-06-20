@@ -1,51 +1,54 @@
-import type { base_default_rule, base_logical_rule } from "./rule.ts";
-import type { listable } from "./types.ts";
+import type { listable, network, network_type } from "./types.ts";
+
+export type version = 1 | 2 | 3 | 4;
+export type headless_rule = rule<v4>;
+export type default_headless_rule = v4;
+export type logical_headless_rule = logical_rule<v4>;
 
 export type rule_set =
-  | rule_set4
-  | rule_set3
-  | rule_set2
-  | rule_set1;
+  | { version: 1 | 2; rules: rule<v1>[] }
+  | { version: 3; rules: rule<v3>[] }
+  | { version: 4; rules: rule<v4>[] };
 
-type rule_set4 = {
-  version: 4;
-  rules: headless_rule<version4>[];
-};
-type rule_set3 = {
-  version: 3;
-  rules: headless_rule<version3>[];
-};
-type rule_set2 = {
-  version: 2;
-  rules: headless_rule<version2>[];
-};
-type rule_set1 = {
-  version: 1;
-  rules: headless_rule<version1>[];
-};
-
-type version4 = default_headless_rule;
-type version3 = Omit<
-  version4,
-  | "network_interface_address"
-  | "default_interface_address"
->;
-type version2 = Omit<
-  version3,
-  | "network_type"
-  | "network_is_expensive"
-  | "network_is_constrained"
->;
-type version1 = version2;
-
-type headless_rule<R extends default_headless_rule> =
-  | R
-  | logical_headless_rule<R>;
-
-type logical_headless_rule<R extends default_headless_rule> =
-  & base_logical_rule
-  & { rules: headless_rule<R>[] };
-
-type default_headless_rule = base_default_rule & {
+type v1 = {
+  type?: "default";
   query_type?: listable<string | number>;
+  network?: listable<network>;
+  domain?: listable<string>;
+  domain_suffix?: listable<string>;
+  domain_keyword?: listable<string>;
+  domain_regex?: listable<string>;
+  source_ip_cidr?: listable<string>;
+  ip_cidr?: listable<string>;
+  source_port?: listable<number>;
+  source_port_range?: listable<string>;
+  port?: listable<number>;
+  port_range?: listable<string>;
+  process_name?: listable<string>;
+  process_path?: listable<string>;
+  process_path_regex?: listable<string>;
+  package_name?: listable<string>;
+  wifi_ssid?: listable<string>;
+  wifi_bssid?: listable<string>;
+  invert?: boolean;
+};
+
+type v3 = v1 & {
+  network_type?: listable<network_type>;
+  network_is_expensive?: boolean;
+  network_is_constrained?: boolean;
+};
+
+type v4 = v3 & {
+  network_interface_address?: Partial<Record<network_type, listable<string>>>;
+  default_interface_address?: listable<string>;
+};
+
+type rule<T> = T | logical_rule<T>;
+
+type logical_rule<T> = {
+  type: "logical";
+  mode: "and" | "or";
+  rules: rule<T>[];
+  invert?: boolean;
 };
