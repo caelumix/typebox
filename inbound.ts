@@ -163,6 +163,7 @@ export type inbound<
     certificate_provider_tag,
     http_client_tag
   >
+  | snell<tag, inbound_tag>
   | tun<tag, rule_set_tag>
   | redirect<tag, inbound_tag>
   | tproxy<tag, inbound_tag>
@@ -374,6 +375,25 @@ interface anytls<
   padding_scheme?: listable<string>;
   tls?: tls<O, DS, C, H>;
 }
+type snell<
+  T extends string,
+  I extends string,
+> =
+  & listen<T, I>
+  & {
+    type: "snell";
+    psk: string;
+    users?: snell_user[];
+  }
+  & (snell5 | snell6);
+type snell5 = {
+  version: 5;
+  obfs_mode?: "none" | "http";
+};
+type snell6 = {
+  version: 6;
+  mode?: "default" | "unshaped" | "unsafe-raw";
+};
 interface tun<T extends string, RS extends string> extends item_with_tag<T> {
   type: "tun";
   interface_name?: string;
@@ -490,6 +510,10 @@ interface tuic_user {
   name?: string;
   uuid: string;
   password?: string;
+}
+interface snell_user {
+  name: string;
+  userkey: string;
 }
 
 type masquerade = masquerade_file | masquerade_proxy | masquerade_http;

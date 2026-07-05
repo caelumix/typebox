@@ -92,6 +92,7 @@ export type outbound<
   | tuic<tag, outbound_tag, dns_server_tag>
   | hysteria2<tag, outbound_tag, dns_server_tag, http_client_tag>
   | anytls<tag, outbound_tag, dns_server_tag>
+  | snell<tag, outbound_tag, dns_server_tag>
   | tor<tag, outbound_tag, dns_server_tag>
   | ssh<tag, outbound_tag, dns_server_tag>
   | selector<tag, outbound_tag>
@@ -263,7 +264,6 @@ interface base_hysteria2<
   T extends string,
   O extends string,
   DS extends string,
-  H extends string,
 > extends remote<T, O, DS>, Omit<server, "server_port"> {
   type: "hysteria2";
   hop_interval?: duration;
@@ -288,7 +288,7 @@ type hysteria2<
   DS extends string,
   H extends string,
 > =
-  & base_hysteria2<T, O, DS, H>
+  & base_hysteria2<T, O, DS>
   & (
     | (hy_server_port & { realm?: never })
     | {
@@ -324,6 +324,23 @@ interface anytls<T extends string, O extends string, DS extends string>
   min_idle_session?: number;
   tls?: tls;
 }
+type snell<T extends string, O extends string, DS extends string> =
+  & remote<T, O, DS>
+  & server
+  & {
+    psk: string;
+    userkey?: string;
+    reuse?: boolean;
+  }
+  & (snell4 | snell6);
+type snell4 = {
+  version: 4;
+  obfs_mode?: "none" | "http";
+};
+type snell6 = {
+  version: 6;
+  mode?: "default" | "unshaped" | "unsafe-raw";
+};
 interface tor<T extends string, O extends string, DS extends string>
   extends dialer<O, DS>, item_with_tag<T> {
   type: "tor";
