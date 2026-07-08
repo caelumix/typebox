@@ -79,6 +79,7 @@ export type outbound<
   http_client_tag extends string,
 > =
   | direct<tag, outbound_tag, dns_server_tag>
+  | bridge<tag>
   | block<tag>
   | socks<tag, outbound_tag, dns_server_tag>
   | http<tag, outbound_tag, dns_server_tag>
@@ -106,6 +107,19 @@ interface remote<T extends string, O extends string, DS extends string>
 interface direct<T extends string, O extends string, DS extends string>
   extends dialer<O, DS>, item_with_tag<T> {
   type: "direct";
+}
+interface bridge<T extends string> extends item_with_tag<T> {
+  type: "bridge";
+  interface?: string;
+  /**
+   * @default bridge
+   */
+  bridge_name?: string;
+  iproute2_table_index?: number;
+  /**
+   * @default 100
+   */
+  iproute2_rule_index?: number;
 }
 interface block<T extends string> extends item_with_tag<T> {
   type: "block";
