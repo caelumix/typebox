@@ -212,10 +212,6 @@ interface naive<T extends string, O extends string, DS extends string>
     | "certificate_public_key_sha256"
   >;
 }
-/** server_port and server_ports are mutually exclusive for hysteria[2] */
-type hy_server_port =
-  | { server_port: number; server_ports?: never }
-  | { server_port?: never; server_ports: listable<string> };
 interface base_hysteria<T extends string, O extends string, DS extends string>
   extends
     remote<T, O, DS>,
@@ -308,20 +304,7 @@ type hysteria2<
   H extends string,
 > =
   & base_hysteria2<T, O, DS>
-  & (
-    | (hy_server_port & { realm?: never })
-    | {
-      realm: {
-        server_url: string;
-        token?: string;
-        realm_id: string;
-        stun_servers: string[];
-        http_client?: H | headless_http_client<O, DS>;
-      };
-      server_port?: never;
-      server_ports?: never;
-    }
-  );
+  & (hy_server_port | { realm: realm<H, O, DS> });
 interface anytls<T extends string, O extends string, DS extends string>
   extends remote<T, O, DS>, server {
   type: "anytls";
@@ -422,3 +405,28 @@ type udp_over_tcp = boolean | {
   enabled: true;
   version: 1 | 2;
 };
+
+/** server_port and server_ports are mutually exclusive for hysteria[2] */
+type hy_server_port =
+  | { server_port: number }
+  | { server_ports: listable<string> };
+
+interface realm<H extends string, O extends string, DS extends string> {
+  server_url: string;
+  token?: string;
+  realm_id: string;
+  stun_servers: string[];
+  http_client?: H | headless_http_client<O, DS>;
+  ip_version?: 4 | 6;
+  port_mapping: {
+    enabled: true;
+    /**
+     * @default 10s
+     */
+    timeout: duration;
+    /**
+     * @default 10m
+     */
+    lifetime: duration;
+  };
+}
