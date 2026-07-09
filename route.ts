@@ -179,7 +179,7 @@ interface default_rule<I extends string, RS extends string, O extends string>
   client?: listable<quic_client>;
   /**
    * Match specified outbounds' preferred routes.
-   * Only support the tag of endpoint tailscale/wireguard now.
+   * Only support the tag of endpoint tailscale/wireguard/bridge now.
    */
   preferred_by?: listable<O>;
 }
