@@ -6,6 +6,7 @@ import type { experimental } from "./experimental.ts";
 import type { http_client } from "./http_client.ts";
 import type { inbound } from "./inbound.ts";
 import type { log } from "./log.ts";
+import type { network_namespace } from "./network_namespace.ts";
 import type { ntp } from "./ntp.ts";
 import type { outbound } from "./outbound.ts";
 import type { route } from "./route.ts";
@@ -43,6 +44,7 @@ export interface schema {
     string
   >[];
   http_clients?: http_client<string, string, string>[];
+  network_namespaces?: network_namespace[];
 }
 
 export type rule_set_schema = { $schema?: string } & rule_set;

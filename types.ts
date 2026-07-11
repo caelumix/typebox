@@ -71,6 +71,11 @@ export interface dialer<O extends string, DS extends string> {
   protect_path?: string;
   routing_mark?: number;
   reuse_addr?: boolean;
+  /**
+   * set network namespace, name or path.
+   * @since sing-box 1.14.0, the tag of a network namespace can also be used.
+   */
+  netns?: string;
   connect_timeout?: duration;
   tcp_fast_open?: boolean;
   tcp_multi_path?: boolean;
@@ -122,6 +127,10 @@ export interface listen<T extends string, I extends string>
   bind_interface?: string;
   routing_mark?: number;
   reuse_addr?: boolean;
+  /**
+   * set network namespace, name or path.
+   * @since sing-box 1.14.0, the tag of a network namespace can also be used.
+   */
   netns?: string;
   tcp_fast_open?: boolean;
   tcp_multi_path?: boolean;

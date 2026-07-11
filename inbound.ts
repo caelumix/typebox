@@ -397,6 +397,10 @@ type snell6 = {
 interface tun<T extends string, RS extends string> extends item_with_tag<T> {
   type: "tun";
   interface_name?: string;
+  /**
+   * create the tun interface in the specified network namespace, name, path, or the tag of a network namespace.
+   */
+  netns?: string;
   mtu?: number;
   /**
    * @default hijack
