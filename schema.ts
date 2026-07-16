@@ -21,7 +21,7 @@ export interface schema {
     string,
     string,
     string,
-    dns.server<string, string, string, string>
+    string
   >;
   endpoints?: endpoint<string, string, string>[];
   inbounds?: inbound<string, string, string, string, string, string, string>[];
@@ -31,7 +31,7 @@ export interface schema {
     string,
     string,
     string,
-    route.rule_set<string, string, string, string>
+    string
   >;
   services?: service<string, string, string, string, string, string>[];
   experimental?: experimental;

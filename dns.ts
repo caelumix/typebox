@@ -21,6 +21,7 @@ import type {
   headers,
   item_with_tag,
   listable,
+  non_empty_array,
   options,
   resolver,
   strategy,
@@ -50,10 +51,15 @@ export function createDnsServer<
 
 export function createDnsServers<
   tag extends string,
-  outbound_tag extends string,
-  service_tag extends string,
-  DS extends dns.server<tag, outbound_tag, service_tag, DS["tag"]>,
->(server: DS[]): DS[] {
+  outbound_tag extends string = never,
+  service_tag extends string = never,
+>(
+  server: non_empty_array<
+    dns.server<tag, outbound_tag, service_tag, NoInfer<tag>>
+  >,
+): non_empty_array<
+  dns.server<tag, outbound_tag, service_tag, NoInfer<tag>>
+> {
   return server;
 }
 
@@ -72,15 +78,25 @@ export function createDnsRule<
  * You should not use this directly, instead use {@link createDnsServer} or {@link createDnsRule}.
  */
 export interface dns<
+  dns_server_tag extends string,
   outbound_tag extends string,
   inbound_tag extends string,
   service_tag extends string,
   rule_set_tag extends string,
-  DS extends dns.server<string, outbound_tag, service_tag, DS["tag"]>,
 > {
-  servers?: DS[];
-  rules?: rule<outbound_tag | "any", inbound_tag, rule_set_tag, DS["tag"]>[];
-  final?: DS["tag"];
+  servers?: dns.server<
+    dns_server_tag,
+    outbound_tag,
+    service_tag,
+    NoInfer<dns_server_tag>
+  >[];
+  rules?: rule<
+    outbound_tag | "any",
+    inbound_tag,
+    rule_set_tag,
+    NoInfer<dns_server_tag>
+  >[];
+  final?: NoInfer<dns_server_tag>;
   optimistic?: boolean | {
     enabled: true;
     /**
@@ -352,7 +368,7 @@ interface default_rule<
    * @since 1.14.0
    */
   rule_set_ip_cidr_accept_empty?: boolean;
-  preferred_by?: listable<NoInfer<DS>>;
+  preferred_by?: listable<DS>;
   match_response?: boolean;
   ip_accept_any?: boolean;
   response_rcode?: dns_rcode;
